@@ -12558,6 +12558,32 @@ Tasa de Descuento (Ke): ${fmtPercent(ke, 1)}`;
         renderResults(moduleResults);
       }
     });
+
+    // --- LÓGICA DE CARGA AUTOMÁTICA ---
+window.addEventListener('load', async () => {
+  console.log("Intentando cargar datos automáticamente...");
+  try {
+    const response = await fetch('index.json');
+    if (response.ok) {
+      const data = await response.json();
+      financialData = data;
+      console.log("✅ Datos cargados con éxito desde index.json");
+      
+      const options = gatherOptions();
+      runAllModules(options);
+      
+      document.getElementById('placeholder-panel').classList.add('hidden');
+      document.getElementById('results-panel').classList.remove('hidden');
+      document.getElementById('data-status-msg').classList.remove('hidden');
+    } else {
+      console.error("No se encontró el archivo index.json");
+    }
+  } catch (err) {
+    console.error("Error en la carga automática:", err);
+  }
+});
+
+    
   </script>
 </body>
 
